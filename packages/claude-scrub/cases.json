@@ -1,0 +1,377 @@
+[
+  {
+    "name": "billing block dropped, prompt kept",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "x-anthropic-billing-header: cc_version=1.0.18; cc_entrypoint=sdk-cli; cc_commit_sha=abc"
+        },
+        {
+          "type": "text",
+          "text": "A normal system prompt."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "A normal system prompt."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    }
+  },
+  {
+    "name": "identity words scrambled in a system block",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "You are Claude Code, Anthropic's official CLI for Claude."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hello"
+        }
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "You are C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bC\u200bo\u200bd\u200be, Anthropic's official CLI for Claude."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hello"
+        }
+      ]
+    }
+  },
+  {
+    "name": "identity words scrambled in a plain message",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "Be brief."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Run this with the Claude Agent SDK"
+        }
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "Be brief."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Run this with the C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bA\u200bg\u200be\u200bn\u200bt\u200b \u200bS\u200bD\u200bK"
+        }
+      ]
+    }
+  },
+  {
+    "name": "identity words scrambled inside a tool_result",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "Be brief."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "config built by Claude Code"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "Be brief."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "config built by C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bC\u200bo\u200bd\u200be"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "no options: both layers at defaults",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "x-anthropic-billing-header: cc_version=1.0.18; cc_entrypoint=sdk-cli; cc_commit_sha=abc"
+        },
+        {
+          "type": "text",
+          "text": "built by the Claude Agent SDK"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "built by the C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bA\u200bg\u200be\u200bn\u200bt\u200b \u200bS\u200bD\u200bK"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    }
+  },
+  {
+    "name": "clean request passes through unchanged",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "You are helpful."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    }
+  },
+  {
+    "name": "custom words replace the defaults, matched ignoring case",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": "Keep the project-x codename secret. You are Claude Code.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "ok"
+        }
+      ]
+    },
+    "options": {
+      "words": [
+        "Project-X"
+      ]
+    },
+    "expect_request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": "Keep the p\u200br\u200bo\u200bj\u200be\u200bc\u200bt\u200b-\u200bx codename secret. You are Claude Code.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty billing list disables the drop",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "x-anthropic-billing-header: cc_version=1.0.18; cc_entrypoint=sdk-cli; cc_commit_sha=abc"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    },
+    "options": {
+      "billing": []
+    }
+  },
+  {
+    "name": "chat protocol: system string and content blocks",
+    "request": {
+      "model": "gpt-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": "You are Claude Code",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "hi from Claude Agent SDK"
+            }
+          ]
+        }
+      ]
+    },
+    "ctx": {
+      "protocol": "chat"
+    },
+    "expect_request": {
+      "model": "gpt-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": "You are C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bC\u200bo\u200bd\u200be",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "hi from C\u200bl\u200ba\u200bu\u200bd\u200be\u200b \u200bA\u200bg\u200be\u200bn\u200bt\u200b \u200bS\u200bD\u200bK"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "probe turns a probe message into a 418",
+    "options": {
+      "probe": true
+    },
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "x-anthropic-billing-header: cc_version=1.0.18; cc_entrypoint=sdk-cli; cc_commit_sha=abc"
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "PROBE_CLAUDE_SCRUB"
+        }
+      ]
+    },
+    "reject": {
+      "status": 418,
+      "message": "claude-scrub middleware alive"
+    }
+  },
+  {
+    "name": "probe off by default: a probe message passes as an ordinary one",
+    "request": {
+      "model": "claude-haiku-5-5",
+      "max_tokens": 64,
+      "stream": false,
+      "system": [
+        {
+          "type": "text",
+          "text": "Be brief."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "PROBE_CLAUDE_SCRUB"
+        }
+      ]
+    }
+  }
+]

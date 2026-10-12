@@ -1,0 +1,14 @@
+{
+  "name": "@magpie-community/middleware-claude-scrub",
+  "version": "0.1.0",
+  "description": "Drop the billing-metadata system block Claude Code puts first in system, and zero-width scramble its identity words, for upstreams that turn its requests away (Antigravity's disguised 429)",
+  "type": "module",
+  "files": ["claude-scrub.middleware.js", "README.md"],
+  "keywords": ["magpie", "magpie-middleware", "claude-code", "antigravity", "zero-width", "llm-gateway"],
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/magpie-community/plugins.git", "directory": "packages/claude-scrub" },
+  "magpie": {
+    "middleware": "./claude-scrub.middleware.js",
+    "options": { "words": ["Claude Agent SDK", "Claude Code"], "billing": ["x-anthropic-billing-header"], "probe": false }
+  }
+}

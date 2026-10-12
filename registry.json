@@ -41,6 +41,8 @@
       "summary": { "en": "New API's sensitive-word filter: turn away or mask words and patterns in what you send, and in replies.", "zh": "New API 的敏感词过滤：拒绝或替换你发出的内容和回复里的词与正则。" } },
     { "package": "@magpie-community/middleware-think-tags", "name": "Think Tags", "kind": "middleware", "community": true,
       "summary": { "en": "Take a model's <think>…</think> out of its reply's text, or put a Chat reply's reasoning into it.", "zh": "去掉回复正文开头的 <think>…</think>，或把 Chat 回复的思考内容放进正文。" } },
+    { "package": "@magpie-community/middleware-claude-scrub", "name": "Claude Scrub", "kind": "middleware", "community": true,
+      "summary": { "en": "Drop the billing-metadata system block Claude Code puts first in system, and zero-width scramble its identity words, for upstreams that turn its requests away (Antigravity's disguised 429).", "zh": "丢掉 Claude Code 放在 system 开头的计费元数据块，并把身份词零宽混淆后发出，给会拒绝它的上游（Antigravity 的伪装 429）。" } },
     { "package": "@magpie-community/agent-aider", "name": "Aider", "kind": "agent", "community": true,
       "summary": { "en": "Aider (aider.chat) on magpie's Agents page: pick one of magpie's models for it, and switch it off to put its config back.", "zh": "把 Aider（aider.chat）加到 magpie 的 Agent 页：给它选 magpie 的模型，关掉即恢复它原来的配置。" } }
   ]
